@@ -2,7 +2,9 @@
 #define CLASSIFIER_HPP
 
 #include <iostream>
+#include <vector>
 #include <cassert>
+#include <memory>
 
 #include <boost/gil.hpp>
 
@@ -12,6 +14,44 @@ namespace cf {
 
     const std::uint_fast32_t bucket_size = 8;
     const std::uint_fast32_t buckets = 256 / bucket_size;
+
+    using __color_histogram =
+        std::vector<std::vector<std::vector<std::uint_fast32_t>>>;
+
+    std::shared_ptr<__color_histogram> make_histogram() {
+        return std::shared_ptr<__color_histogram>(
+            new __color_histogram(
+                buckets,
+                std::vector<std::vector<std::uint_fast32_t>>(
+                    buckets,
+                    std::vector<std::uint_fast32_t>(
+                        buckets, 
+                        0))));
+    }
+
+    class color_histogram {
+        private:
+            std::shared_ptr<__color_histogram> data = make_histogram();
+        public:
+            auto& operator[](std::uint_fast32_t idx) noexcept {
+                return (*data)[idx];
+            }
+    };
+
+    color_histogram calculate_histogram(gil::rgb8c_view_t view) noexcept {
+        color_histogram hist;
+
+        for (int x = 0; x < view.width(); ++x)
+            for (int y = 0; y < view.height(); ++y) {
+                auto p = view(x, y);
+                ++hist[p[0] / bucket_size]
+                      [p[1] / bucket_size]
+                      [p[2] / bucket_size];
+            }
+
+        return hist;
+    }
+    
     
     double compare(gil::rgb8c_view_t l, gil::rgb8c_view_t r) noexcept {
         // mem :^)

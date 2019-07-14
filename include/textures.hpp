@@ -4,7 +4,6 @@
 #include <map>
 #include <set>
 #include <cassert>
-#include <iostream>
 
 #include <boost/gil.hpp>
 #include <boost/gil/extension/io/png.hpp>
@@ -12,8 +11,8 @@
 
 namespace tx {
     
-    using namespace boost;
-    namespace fs = filesystem;
+    namespace gil = boost::gil;
+    namespace fs  = boost::filesystem;
 
     // TODO: does not help the png include
     const std::string extension = "png";
