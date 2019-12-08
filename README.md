@@ -6,6 +6,8 @@ The program uses histogram method to find similarities between textures and part
 
 ## Examples
 
+**Warning:** huge pictures.
+
 Picture of a cat.
 
 ![cat_blocks](data/example_images/nix_blocks.jpeg)
@@ -17,3 +19,7 @@ Higher resolution.
 Toscana, Italy.
 
 ![toscana](data/example_images/toscana2.jpg)
+
+Valve's old logo.
+
+![valve_logo](data/example_images/valve_head_blocks3.png)
